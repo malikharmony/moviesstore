@@ -4,6 +4,7 @@ from movies.models import Movie
 from .utils import calculate_cart_total
 from .models import Order, Item
 from django.contrib.auth.decorators import login_required
+from stats.models import UserStat
 
 def index(request):
     cart_total = 0
@@ -43,13 +44,18 @@ def purchase(request):
     order.user = request.user
     order.total = cart_total
     order.save()
+    movie_total = 0
     for movie in movies_in_cart:
         item = Item()
         item.movie = movie
         item.price = movie.price
         item.order = order
         item.quantity = cart[str(movie.id)]
+        movie_total += int(cart[str(movie.id)])
         item.save()
+    user_stat, create = UserStat.objects.get_or_create(name = request.user.username, user = request.user, purchaseTotal = 0)
+    user_stat.purchaseTotal += movie_total
+    user_stat.save()
     request.session['cart'] = {}
     template_data = {}
     template_data['title'] = 'Purchase confirmation'
