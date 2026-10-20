@@ -53,7 +53,7 @@ def purchase(request):
         item.quantity = cart[str(movie.id)]
         movie_total += int(cart[str(movie.id)])
         item.save()
-    user_stat, create = UserStat.objects.get_or_create(name = request.user.username, user = request.user, purchaseTotal = 0)
+    user_stat, create = UserStat.objects.get_or_create(user=request.user, defaults={'name': request.user.username, 'purchaseTotal': 0})
     user_stat.purchaseTotal += movie_total
     user_stat.save()
     request.session['cart'] = {}
