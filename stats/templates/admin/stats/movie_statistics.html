@@ -1,0 +1,72 @@
+{% extends "admin/change_list.html" %}
+
+{% block breadcrumbs %}
+
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}"> Home</a>
+    &rsaquo;
+    <a href="{% url 'admin:app_list' app_label=opts.app_label %}">
+        {{ opts.app_config.verbose_name }}
+    </a>
+    &rsaquo; Movie statistics
+</div>
+{% endblock %}
+
+{% block content %}
+
+<p>
+    Refresh after new purchases or reviews. Tied leaders are shown.
+</p>
+
+<div class="module">
+    <h2>Most purchased movie</h2>
+
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th scope="col">Movie Name</th>
+                <th scope="col">Copies Purchased</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for movie in most_purchased %}
+        <tr>
+            <th scope="row"> {{ movie.name }} </th>
+            <td>{{ movie.total }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No movies purchased yet.</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="module">
+    <h2>Most Reviewed Movie</h2>
+
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th scope="col">Movie Name</th>
+                <th scope="col">Reviews</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for movie in most_reviewed %}
+        <tr>
+            <th scope="row"> {{ movie.name }} </th>
+            <td>{{ movie.total }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No movies have been reviewed yet.</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
