@@ -29,6 +29,33 @@
             </div>
           </form>
         </p>
+
+        <h2>Ratings</h2>
+        <hr />
+
+        <p><b>Average Rating:</b> {{ template_data.average_rating }}</p>
+
+        <form method="POST" action="{% url 'movies.create_rating' id=template_data.movie.id %}">
+          {% csrf_token %}
+          <p>
+            <label for="score">Score:</label>
+            <select name="score" id="score" class="form-control" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </p>
+          <div class="text-center">
+            <button type="submit"
+              class="btn bg-dark text-white">
+              Add Rating
+            </button>
+          </div>
+        </form>
+
+
         <h2>Reviews</h2>
         <hr />
         <ul class="list-group">
